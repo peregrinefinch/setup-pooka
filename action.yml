@@ -1,0 +1,15 @@
+name: Set up Pooka
+description: Install a released Pooka compiler on Linux or macOS
+branding:
+  icon: package
+  color: orange
+inputs:
+  pooka-version:
+    description: Exact compiler version, such as 0.1.0
+    required: true
+outputs:
+  pooka-version:
+    description: Installed compiler version
+runs:
+  using: node24
+  main: index.mjs
