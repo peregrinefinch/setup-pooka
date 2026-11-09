@@ -16,7 +16,7 @@ jobs:
         with:
           otp-version: "29"
           rebar3-version: "3"
-      - uses: pooka-lang/setup-pooka@v1
+      - uses: peregrinefinch/setup-pooka@v1
         with:
           pooka-version: "0.1.0"
       - run: pooka deps download
@@ -30,7 +30,7 @@ The action downloads `pooka` and `pooka.sha256` from the matching `v<version>` r
 
 ## Publishing the first version
 
-Publish this directory as `pooka-lang/setup-pooka` and tag its reviewed initial commit `v1.0.0` and `v1`. Generated projects use the `v1` tag. A local directory alone cannot be resolved by GitHub's `uses:` syntax.
+Publish this directory as `peregrinefinch/setup-pooka` and tag its reviewed initial commit `v1.0.0` and `v1`. Generated projects use the `v1` tag. A local directory alone cannot be resolved by GitHub's `uses:` syntax.
 
 Publish the compiler as release `v0.1.0` in `pooka-lang/pooka`, with these assets:
 
@@ -55,3 +55,7 @@ npm test
 ```
 
 Tests mock release downloads and cover exact versions, checksum integrity, installation on Linux/macOS, failed downloads, compiler version mismatches, unsupported platforms and runtime failures. CI runs the suite on Linux and macOS. Windows support can be added after validating the compiler and executable launcher there.
+
+## Testing compiler releases
+
+`compiler-repository` can select another public GitHub repository with the same release assets and tag convention. It defaults to `pooka-lang/pooka`. The personal smoke project uses `peregrinefinch/setup-pooka` to host temporary compiler assets, without publishing the planned language release.

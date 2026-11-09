@@ -67,3 +67,12 @@ for (const failure of ['download', 'checksum', 'version', 'runtime', 'platform']
     assert.deepEqual(await readdir(root), []);
   }));
 }
+
+test('compiler repository override selects the requested release host', async () => fixture(async (options, root, urls) => {
+  await install({ ...options, repository: 'peregrinefinch/setup-pooka' });
+  assert.ok(urls.every(url => url.startsWith('https://github.com/peregrinefinch/setup-pooka/releases/')));
+}));
+
+test('invalid repository paths are rejected before downloading', async () => fixture(async (options) => {
+  await assert.rejects(install({ ...options, repository: 'owner/repo/../../other' }), /owner\/repository/);
+}));

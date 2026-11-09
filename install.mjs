@@ -26,6 +26,7 @@ export function verifyChecksum(bytes, checksum) {
 
 export async function install({
   version: requested,
+  repository = 'pooka-lang/pooka',
   temporaryDirectory,
   pathFile,
   outputFile,
@@ -34,13 +35,16 @@ export async function install({
   execute = (file) => execFileSync(file, ['--version'], { encoding: 'utf8', timeout: 30000 }),
 }) {
   const version = versionNumber(requested);
+  if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository)) {
+    throw new Error('compiler-repository must be a GitHub owner/repository');
+  }
   if (!['linux', 'darwin'].includes(platform)) {
     throw new Error('setup-pooka currently supports Linux and macOS runners');
   }
   if (!temporaryDirectory || !pathFile || !outputFile) {
     throw new Error('GitHub runner temporary directory, PATH and output files are required');
   }
-  const base = `https://github.com/pooka-lang/pooka/releases/download/v${version}`;
+  const base = `https://github.com/${repository}/releases/download/v${version}`;
   const read = async (name) => {
     const response = await download(`${base}/${name}`, { signal: AbortSignal.timeout(60000) });
     if (!response.ok) {

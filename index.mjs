@@ -4,6 +4,7 @@ import { install } from './install.mjs';
 try {
   const version = await install({
     version: process.env['INPUT_POOKA-VERSION'] ?? '',
+    repository: process.env['INPUT_COMPILER-REPOSITORY'] || 'pooka-lang/pooka',
     temporaryDirectory: process.env.RUNNER_TEMP,
     pathFile: process.env.GITHUB_PATH,
     outputFile: process.env.GITHUB_OUTPUT,

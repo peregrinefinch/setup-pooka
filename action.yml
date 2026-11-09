@@ -7,6 +7,9 @@ inputs:
   pooka-version:
     description: Exact compiler version, such as 0.1.0
     required: true
+  compiler-repository:
+    description: GitHub repository containing the compiler release
+    default: pooka-lang/pooka
 outputs:
   pooka-version:
     description: Installed compiler version
