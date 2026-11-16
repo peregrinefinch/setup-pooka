@@ -1,18 +1,21 @@
 name: Set up Pooka
-description: Install a released Pooka compiler on Linux or macOS
+description: Install a released Pooka compiler on Linux, macOS or Windows
 branding:
   icon: package
   color: orange
 inputs:
   pooka-version:
-    description: Exact compiler version, such as 0.1.0
+    description: Compiler version or SemVer range, such as 0.3.2 or >=0.3.2
     required: true
   compiler-repository:
     description: GitHub repository containing the compiler release
     default: pooka-lang/pooka
+  github-token:
+    description: GitHub token used to resolve release ranges
+    default: ${{ github.token }}
 outputs:
   pooka-version:
     description: Installed compiler version
 runs:
   using: node24
-  main: index.mjs
+  main: dist/index.mjs

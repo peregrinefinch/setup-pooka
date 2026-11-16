@@ -44,11 +44,12 @@ async function fixture(body) {
   finally { await rm(root, { recursive: true, force: true }); }
 }
 
-for (const platform of ['linux', 'darwin']) {
+for (const platform of ['linux', 'darwin', 'win32']) {
   test(`installs verified bytes and publishes PATH on ${platform}`, async () => fixture(async (options, root, urls) => {
     assert.equal(await install({ ...options, platform }), '0.1.0');
     const directory = (await readFile(options.pathFile, 'utf8')).trim();
     assert.deepEqual(await readFile(join(directory, 'pooka')), bytes);
+    if (platform === 'win32') assert.equal(await readFile(join(directory, 'pooka.cmd'), 'utf8'), '@echo off\r\nescript "%~dp0pooka" %*\r\n');
     assert.equal(await readFile(options.outputFile, 'utf8'), 'pooka-version=0.1.0\n');
     assert.deepEqual(urls, ['pooka', 'pooka.sha256'].map(name => `https://github.com/pooka-lang/pooka/releases/download/v0.1.0/${name}`));
   }));
@@ -61,7 +62,7 @@ for (const failure of ['download', 'checksum', 'version', 'runtime', 'platform']
     if (failure === 'checksum') changed.download = async () => new Response('corrupt');
     if (failure === 'version') changed.execute = () => 'pooka 9.0.0';
     if (failure === 'runtime') changed.execute = () => { throw new Error('OTP missing'); };
-    if (failure === 'platform') changed.platform = 'win32';
+    if (failure === 'platform') changed.platform = 'freebsd';
     await assert.rejects(install(changed));
     await assert.rejects(readFile(options.pathFile), { code: 'ENOENT' });
     assert.deepEqual(await readdir(root), []);

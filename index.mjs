@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { install } from './install.mjs';
 
+async function main() {
 try {
   const version = await install({
     version: process.env['INPUT_POOKA-VERSION'] ?? '',
+    token: process.env['INPUT_GITHUB-TOKEN'] || '',
     repository: process.env['INPUT_COMPILER-REPOSITORY'] || 'pooka-lang/pooka',
     temporaryDirectory: process.env.RUNNER_TEMP,
     pathFile: process.env.GITHUB_PATH,
@@ -15,3 +17,7 @@ try {
   console.error(`setup-pooka: ${error.message}`);
   process.exitCode = 1;
 }
+
+}
+
+main();
